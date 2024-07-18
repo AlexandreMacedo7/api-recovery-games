@@ -37,4 +37,12 @@ public class UserService {
         List<User> userList = repository.findAll();
         return userMapper.toDTOList(userList);
     }
+
+    public void deleteUserById(Long id) throws UserNotFoundException {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new UserNotFoundException(id);
+        }
+    }
 }
