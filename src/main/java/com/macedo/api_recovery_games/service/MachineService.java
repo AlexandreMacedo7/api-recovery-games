@@ -6,7 +6,6 @@ import com.macedo.api_recovery_games.models.dtos.MachineDTO;
 import com.macedo.api_recovery_games.models.dtos.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.mapper.MachineMapper;
 import com.macedo.api_recovery_games.repository.MachineRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,9 +53,9 @@ public class MachineService {
     }
 
     public void deleteMachineById(Long id) throws MachineNotFoundException {
-        try {
+        if (machineRepository.existsById(id)) {
             machineRepository.deleteById(id);
-        } catch (EntityNotFoundException ex) {
+        } else {
             throw new MachineNotFoundException(id);
         }
     }
