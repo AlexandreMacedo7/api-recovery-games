@@ -1,8 +1,6 @@
 package com.macedo.api_recovery_games.models.mapper;
 
-import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.User;
-import com.macedo.api_recovery_games.models.dtos.MachineDTO;
 import com.macedo.api_recovery_games.models.dtos.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,11 +12,11 @@ public interface UserMapper {
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "phone", target = "phone")
-    MachineDTO toDTO(User user);
+    UserDTO toDTO(User user);
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "phone", target = "phone")
-    Machine toEntity(MachineDTO machineDTO);
+    User toEntity(UserDTO userDTO);
 
     List<UserDTO> toDTOList(List<User> users);
 
