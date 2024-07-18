@@ -2,6 +2,8 @@ package com.macedo.api_recovery_games.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -12,6 +14,9 @@ public class User {
 
     private String name;
     private String phone;
+
+    @OneToMany(mappedBy = "user")
+    private List<Rental> rentals;
 
     public User() {
     }
@@ -26,6 +31,10 @@ public class User {
 
     public String getPhone() {
         return phone;
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
     }
 
     public void setName(String name) {

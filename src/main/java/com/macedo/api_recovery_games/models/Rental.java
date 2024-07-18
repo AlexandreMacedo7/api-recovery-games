@@ -14,9 +14,11 @@ public class Rental {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "machine_id")
     private Machine machine;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private LocalDateTime startTime;
@@ -25,6 +27,7 @@ public class Rental {
 
     public Rental() {
     }
+
 
     public Long getId() {
         return id;

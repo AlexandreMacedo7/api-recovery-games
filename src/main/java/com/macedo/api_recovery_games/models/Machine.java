@@ -3,6 +3,7 @@ package com.macedo.api_recovery_games.models;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "machines")
@@ -13,6 +14,9 @@ public class Machine {
     private Long Id;
     private String type;
     private BigDecimal hourlyRate;
+
+    @OneToMany(mappedBy = "machine")
+    private List<Rental> rentals;
 
     public Machine() {
     }
@@ -27,6 +31,10 @@ public class Machine {
 
     public BigDecimal getHourlyRate() {
         return hourlyRate;
+    }
+
+    public List<Rental> getRentals() {
+        return rentals;
     }
 
     public void setType(String type) {
