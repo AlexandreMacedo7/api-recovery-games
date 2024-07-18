@@ -8,6 +8,8 @@ import com.macedo.api_recovery_games.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
 
@@ -26,8 +28,13 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public UserDTO getUserById(Long id){
-        User user = repository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
+    public UserDTO getUserById(Long id) {
+        User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return userMapper.toDTO(user);
+    }
+
+    public List<UserDTO> getAllUsers() {
+        List<User> userList = repository.findAll();
+        return userMapper.toDTOList(userList);
     }
 }
