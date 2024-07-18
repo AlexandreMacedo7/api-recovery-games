@@ -1,5 +1,6 @@
 package com.macedo.api_recovery_games.service;
 
+import com.macedo.api_recovery_games.exception.UserNotFoundException;
 import com.macedo.api_recovery_games.models.User;
 import com.macedo.api_recovery_games.models.dtos.UserDTO;
 import com.macedo.api_recovery_games.models.mapper.UserMapper;
@@ -22,6 +23,11 @@ public class UserService {
     public UserDTO saveUser(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         repository.save(user);
+        return userMapper.toDTO(user);
+    }
+
+    public UserDTO getUserById(Long id){
+        User user = repository.findById(id).orElseThrow(()-> new UserNotFoundException(id));
         return userMapper.toDTO(user);
     }
 }
