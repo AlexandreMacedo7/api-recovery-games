@@ -34,12 +34,10 @@ public class MachineService {
 
     @Transactional
     public MachineDTO patchMachine(Long id, MachinePatchDTO dto) {
-        Optional<Machine> machineOptional = machineRepository.findById(id);
+        Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
+                .orElseThrow(() -> new MachineNotFoundException(id)));
 
-        return machineOptional.map(machine -> {
-            Machine updatedMachine = fieldUpdate(dto, Optional.of(machine));
-            return mapper.toDTO(updatedMachine);
-        }).orElseThrow(() -> new MachineNotFoundException(id));
+        return mapper.toDTO(fieldUpdate(dto, machineOptional));
     }
 
     public MachineDTO getMachineById(Long id) {
