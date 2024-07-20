@@ -1,6 +1,7 @@
 package com.macedo.api_recovery_games.controller;
 
 import com.macedo.api_recovery_games.models.dtos.UserDTO;
+import com.macedo.api_recovery_games.models.dtos.UserPatchDTO;
 import com.macedo.api_recovery_games.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,11 @@ public class UserController {
         return ResponseEntity.ok(service.saveUser(userDTO));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserPatchDTO userPatchDTO){
+        return ResponseEntity.ok(service.patchUser(id, userPatchDTO));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(service.getUserById(id));
@@ -38,5 +44,4 @@ public class UserController {
         service.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
-
 }
