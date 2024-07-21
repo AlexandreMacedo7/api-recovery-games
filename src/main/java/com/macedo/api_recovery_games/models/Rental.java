@@ -23,7 +23,7 @@ public class Rental {
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private BigDecimal totalConst;
+    private BigDecimal totalCost;
 
     public Rental() {
     }
@@ -49,8 +49,8 @@ public class Rental {
         return endTime;
     }
 
-    public BigDecimal getTotalConst() {
-        return totalConst;
+    public BigDecimal getTotalCost() {
+        return totalCost;
     }
 
     public void setMachine(Machine machine) {
@@ -69,7 +69,7 @@ public class Rental {
         this.endTime = endTime;
     }
 
-    public void setTotalConst(BigDecimal totalConst) {
-        this.totalConst = totalConst;
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
     }
 }

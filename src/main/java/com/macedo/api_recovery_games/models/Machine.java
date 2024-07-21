@@ -37,6 +37,10 @@ public class Machine {
         return rentals;
     }
 
+    public void setId(Long id) {
+        Id = id;
+    }
+
     public void setType(String type) {
         this.type = type;
     }
