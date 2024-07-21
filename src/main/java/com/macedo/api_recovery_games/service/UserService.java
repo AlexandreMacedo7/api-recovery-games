@@ -31,7 +31,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO patchUser (Long id, UserPatchDTO userPatchDTO){
+    public UserDTO patchUser(Long id, UserPatchDTO userPatchDTO) {
         Optional<User> optionalUser = Optional.ofNullable(repository.findById(id).orElseThrow(() -> new UserNotFoundException(id)));
 
         return userMapper.toDTO(fieldUpdate(userPatchDTO, optionalUser));
@@ -51,6 +51,12 @@ public class UserService {
         if (repository.existsById(id)) {
             repository.deleteById(id);
         } else {
+            throw new UserNotFoundException(id);
+        }
+    }
+
+    public void validateById(Long id) {
+        if (!repository.existsById(id)) {
             throw new UserNotFoundException(id);
         }
     }

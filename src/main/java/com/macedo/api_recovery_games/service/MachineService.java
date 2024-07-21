@@ -68,4 +68,10 @@ public class MachineService {
         machineRepository.save(machine);
         return machine;
     }
+
+    public void validateById(Long id) {
+        if (!machineRepository.existsById(id)) {
+            throw new MachineNotFoundException(id);
+        }
+    }
 }
