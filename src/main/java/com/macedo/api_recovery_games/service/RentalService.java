@@ -1,7 +1,41 @@
 package com.macedo.api_recovery_games.service;
 
+import com.macedo.api_recovery_games.models.Rental;
+import com.macedo.api_recovery_games.models.dtos.RentalDTO;
+import com.macedo.api_recovery_games.models.mapper.RentalMapper;
+import com.macedo.api_recovery_games.repository.RentalRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 @Service
 public class RentalService {
+
+    private final RentalRepository repository;
+    private final MachineService machineService;
+    private final UserService userService;
+    private final RentalMapper mapper;
+
+
+    public RentalService(RentalRepository repository, MachineService machineService, UserService userService, RentalMapper mapper) {
+        this.repository = repository;
+        this.machineService = machineService;
+        this.userService = userService;
+        this.mapper = mapper;
+    }
+
+    @Transactional
+    public RentalDTO saveRental(RentalDTO rentalDTO) {
+
+        validateMachineAndUser(rentalDTO.machineId(), rentalDTO.userId());
+
+        Rental rental = mapper.toEntity(rentalDTO);
+        repository.save(rental);
+
+        return mapper.toDTO(rental);
+    }
+
+    private void validateMachineAndUser(Long idMachine, Long idUser) {
+        userService.validateById(idUser);
+        machineService.validateById(idMachine);
+    }
 }
