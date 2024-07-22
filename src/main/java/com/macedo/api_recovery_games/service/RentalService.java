@@ -8,6 +8,8 @@ import com.macedo.api_recovery_games.repository.RentalRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RentalService {
 
@@ -38,6 +40,10 @@ public class RentalService {
     public RentalDTO getRentalById(Long id){
         Rental rental = repository.findById(id).orElseThrow(()-> new RentalNotFoundException(id));
         return mapper.toDTO(rental);
+    }
+
+    public List<RentalDTO> getAllRental(){
+        return mapper.toDTOList(repository.findAll());
     }
 
     private void validateMachineAndUser(Long idMachine, Long idUser) {
