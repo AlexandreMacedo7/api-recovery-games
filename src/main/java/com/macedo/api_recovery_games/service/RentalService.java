@@ -1,6 +1,7 @@
 package com.macedo.api_recovery_games.service;
 
 import com.macedo.api_recovery_games.exception.RentalNotFoundException;
+import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.models.dtos.RentalPatchDTO;
@@ -31,10 +32,14 @@ public class RentalService {
     @Transactional
     public RentalDTO saveRental(RentalDTO rentalDTO) {
 
-        validateMachineAndUser(rentalDTO.machineId(), rentalDTO.userId());
+        Machine machine = validateMachine(rentalDTO.machineId());
+        checkAvailabilityForRental(machine);
+
+        validateUser(rentalDTO.userId());
 
         Rental rental = mapper.toEntity(rentalDTO);
         repository.save(rental);
+        updateAvailableStatusMachine(machine);
 
         return mapper.toDTO(rental);
     }
@@ -73,8 +78,19 @@ public class RentalService {
         return rental;
     }
 
-    private void validateMachineAndUser(Long idMachine, Long idUser) {
-        userService.validateById(idUser);
-        machineService.validateById(idMachine);
+    private Machine validateMachine(Long idMachine) {
+        return machineService.validateById(idMachine);
+    }
+
+    private void validateUser(Long id) {
+        userService.validateById(id);
+    }
+
+    private void checkAvailabilityForRental(Machine machine) {
+        machineService.checkAvailabilityForRental(machine);
+    }
+
+    private void updateAvailableStatusMachine(Machine machine) {
+        machineService.markMachineAsUnavailable(machine);
     }
 }
