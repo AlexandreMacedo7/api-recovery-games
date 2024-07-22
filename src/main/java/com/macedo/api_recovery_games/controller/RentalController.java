@@ -32,4 +32,10 @@ public class RentalController {
     public ResponseEntity<List<RentalDTO>> getAllRentals() {
         return ResponseEntity.ok(rentalService.getAllRental());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        rentalService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }
