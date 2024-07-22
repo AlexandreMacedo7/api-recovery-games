@@ -2,6 +2,7 @@ package com.macedo.api_recovery_games.models;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,7 +17,7 @@ public class User {
     private String phone;
 
     @OneToMany(mappedBy = "user")
-    private List<Rental> rentals;
+    private List<Rental> rentals = new ArrayList<>();
 
     public User() {
     }
@@ -35,6 +36,11 @@ public class User {
 
     public List<Rental> getRentals() {
         return rentals;
+    }
+
+    public void addRental(Rental rental) {
+        rentals.add(rental);
+        rental.setUser(this);
     }
 
     public void setId(Long id) {
