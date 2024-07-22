@@ -37,13 +37,21 @@ public class RentalService {
         return mapper.toDTO(rental);
     }
 
-    public RentalDTO getRentalById(Long id){
-        Rental rental = repository.findById(id).orElseThrow(()-> new RentalNotFoundException(id));
+    public RentalDTO getRentalById(Long id) {
+        Rental rental = repository.findById(id).orElseThrow(() -> new RentalNotFoundException(id));
         return mapper.toDTO(rental);
     }
 
-    public List<RentalDTO> getAllRental(){
+    public List<RentalDTO> getAllRental() {
         return mapper.toDTOList(repository.findAll());
+    }
+
+    public void deleteById(Long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new RentalNotFoundException(id);
+        }
     }
 
     private void validateMachineAndUser(Long idMachine, Long idUser) {
