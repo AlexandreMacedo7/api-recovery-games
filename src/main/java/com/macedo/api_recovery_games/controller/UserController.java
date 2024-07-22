@@ -1,5 +1,6 @@
 package com.macedo.api_recovery_games.controller;
 
+import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.models.dtos.UserDTO;
 import com.macedo.api_recovery_games.models.dtos.UserPatchDTO;
 import com.macedo.api_recovery_games.service.UserService;
@@ -25,13 +26,18 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserPatchDTO userPatchDTO){
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserPatchDTO userPatchDTO) {
         return ResponseEntity.ok(service.patchUser(id, userPatchDTO));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(service.getUserById(id));
+    }
+
+    @GetMapping("/{id}/rentals")
+    public ResponseEntity<List<RentalDTO>> getRentalsByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getRentalByUserId(id));
     }
 
     @GetMapping()
