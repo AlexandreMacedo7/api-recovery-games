@@ -2,6 +2,7 @@ package com.macedo.api_recovery_games.controller;
 
 import com.macedo.api_recovery_games.models.dtos.MachineDTO;
 import com.macedo.api_recovery_games.models.dtos.MachinePatchDTO;
+import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.service.MachineService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class MachineController {
     @GetMapping("/{id}")
     public ResponseEntity<MachineDTO> getMachine(@PathVariable Long id) {
         return ResponseEntity.ok(machineService.getMachineById(id));
+    }
+
+    @GetMapping("/{id}/rentals")
+    public ResponseEntity<List<RentalDTO>> getRentalsByMachineId(@PathVariable Long id) {
+        return ResponseEntity.ok(machineService.getRentalsByMachineId(id));
     }
 
     @GetMapping
