@@ -1,5 +1,6 @@
 package com.macedo.api_recovery_games.service;
 
+import com.macedo.api_recovery_games.exception.MachineNotAvailableException;
 import com.macedo.api_recovery_games.exception.MachineNotFoundException;
 import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.dtos.MachineDTO;
@@ -69,9 +70,15 @@ public class MachineService {
         return machine;
     }
 
-    public void validateById(Long id) {
-        if (!machineRepository.existsById(id)) {
-            throw new MachineNotFoundException(id);
-        }
+    public Machine validateById(Long id) {
+        return machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
+    }
+
+    public void checkAvailabilityForRental(Machine machine) {
+        if (!machine.isAvailable()) throw new MachineNotAvailableException(machine.getId());
+    }
+    public void markMachineAsUnavailable(Machine machine){
+        machine.setAvailable(false);
+        machineRepository.save(machine);
     }
 }
