@@ -39,6 +39,8 @@ public class RentalService {
 
         Rental rental = mapper.toEntity(rentalDTO);
         repository.save(rental);
+
+        addRentalForMachine(rental, machine);
         updateAvailableStatusMachine(machine);
 
         return mapper.toDTO(rental);
@@ -92,5 +94,9 @@ public class RentalService {
 
     private void updateAvailableStatusMachine(Machine machine) {
         machineService.markMachineAsUnavailable(machine);
+    }
+
+    private void addRentalForMachine(Rental rental, Machine machine) {
+        machineService.addRental(rental, machine);
     }
 }
