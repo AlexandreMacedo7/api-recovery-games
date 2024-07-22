@@ -22,5 +22,5 @@ public interface RentalMapper {
 
     List<RentalDTO> toDTOList(List<Rental> rentalList);
 
-    List<Rental> toEntituList(List<RentalDTO> rentalDTOS);
+    List<Rental> toEntityList(List<RentalDTO> rentalDTOS);
 }
