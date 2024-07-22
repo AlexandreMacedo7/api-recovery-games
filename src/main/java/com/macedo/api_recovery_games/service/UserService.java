@@ -3,8 +3,10 @@ package com.macedo.api_recovery_games.service;
 import com.macedo.api_recovery_games.exception.UserNotFoundException;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.User;
+import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.models.dtos.UserDTO;
 import com.macedo.api_recovery_games.models.dtos.UserPatchDTO;
+import com.macedo.api_recovery_games.models.mapper.RentalMapper;
 import com.macedo.api_recovery_games.models.mapper.UserMapper;
 import com.macedo.api_recovery_games.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -18,10 +20,12 @@ public class UserService {
 
     private final UserRepository repository;
     private final UserMapper userMapper;
+    private final RentalMapper rentalMapper;
 
-    public UserService(UserRepository repository, UserMapper userMapper) {
+    public UserService(UserRepository repository, UserMapper userMapper, RentalMapper rentalMapper) {
         this.repository = repository;
         this.userMapper = userMapper;
+        this.rentalMapper = rentalMapper;
     }
 
     @Transactional
@@ -41,6 +45,11 @@ public class UserService {
     public UserDTO getUserById(Long id) {
         User user = repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
         return userMapper.toDTO(user);
+    }
+
+    public List<RentalDTO> getRentalByUserId(Long id) {
+        User user = validateById(id);
+        return rentalMapper.toDTOList(user.getRentals());
     }
 
     public List<UserDTO> getAllUsers() {
