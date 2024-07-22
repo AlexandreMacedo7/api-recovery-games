@@ -3,6 +3,7 @@ package com.macedo.api_recovery_games.models;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,7 +18,7 @@ public class Machine {
     private boolean available = true;
 
     @OneToMany(mappedBy = "machine")
-    private List<Rental> rentals;
+    private List<Rental> rentals = new ArrayList<>();
 
     public Machine() {
     }
@@ -41,6 +42,10 @@ public class Machine {
     public List<Rental> getRentals() {
         return rentals;
     }
+    public void AddRental(Rental rental){
+        rentals.add(rental);
+        rental.setMachine(this);
+    }
 
     public void setId(Long id) {
         Id = id;
@@ -56,5 +61,9 @@ public class Machine {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+    public void removeRental(Rental rental) {
+        rentals.remove(rental);
+        rental.setMachine(null);
     }
 }
