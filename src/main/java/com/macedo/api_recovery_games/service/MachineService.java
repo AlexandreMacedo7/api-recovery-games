@@ -6,7 +6,9 @@ import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.dtos.MachineDTO;
 import com.macedo.api_recovery_games.models.dtos.MachinePatchDTO;
+import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.models.mapper.MachineMapper;
+import com.macedo.api_recovery_games.models.mapper.RentalMapper;
 import com.macedo.api_recovery_games.repository.MachineRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,13 @@ public class MachineService {
 
     private final MachineRepository machineRepository;
     private final MachineMapper mapper;
+    private final RentalMapper rentalMapper;
 
     @Autowired
-    public MachineService(MachineRepository machineRepository, MachineMapper mapper) {
+    public MachineService(MachineRepository machineRepository, MachineMapper mapper, RentalMapper rentalMapper) {
         this.machineRepository = machineRepository;
         this.mapper = mapper;
+        this.rentalMapper = rentalMapper;
     }
 
     @Transactional
@@ -45,6 +49,11 @@ public class MachineService {
     public MachineDTO getMachineById(Long id) {
         Machine machine = machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
         return mapper.toDTO(machine);
+    }
+
+    public List<RentalDTO> getRentalsByMachineId(Long id) {
+        Machine machine = validateById(id);
+        return rentalMapper.toDTOList(machine.getRentals());
     }
 
     public List<MachineDTO> getAllMachines() {
