@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("rentals")
 public class RentalController {
@@ -24,5 +26,10 @@ public class RentalController {
     @GetMapping("/{id}")
     public ResponseEntity<RentalDTO> getRental(@PathVariable Long id) {
         return ResponseEntity.ok(rentalService.getRentalById(id));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<RentalDTO>> getAllRentals() {
+        return ResponseEntity.ok(rentalService.getAllRental());
     }
 }
