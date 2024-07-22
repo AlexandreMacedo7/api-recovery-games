@@ -14,6 +14,7 @@ public class Machine {
     private Long Id;
     private String type;
     private BigDecimal hourlyRate;
+    private boolean available = true;
 
     @OneToMany(mappedBy = "machine")
     private List<Rental> rentals;
@@ -33,6 +34,10 @@ public class Machine {
         return hourlyRate;
     }
 
+    public boolean isAvailable() {
+        return available;
+    }
+
     public List<Rental> getRentals() {
         return rentals;
     }
@@ -47,5 +52,9 @@ public class Machine {
 
     public void setHourlyRate(BigDecimal hourlyRate) {
         this.hourlyRate = hourlyRate;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
