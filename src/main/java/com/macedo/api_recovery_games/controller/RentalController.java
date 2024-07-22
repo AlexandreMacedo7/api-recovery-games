@@ -1,6 +1,7 @@
 package com.macedo.api_recovery_games.controller;
 
 import com.macedo.api_recovery_games.models.dtos.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.RentalPatchDTO;
 import com.macedo.api_recovery_games.service.RentalService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,11 @@ public class RentalController {
     @PostMapping
     public ResponseEntity<RentalDTO> createRental(@RequestBody @Valid RentalDTO rentalDTO) {
         return ResponseEntity.ok(rentalService.saveRental(rentalDTO));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<RentalDTO> updateRental(@PathVariable Long id, @RequestBody RentalPatchDTO patchDTO) {
+        return ResponseEntity.ok(rentalService.patchRental(id, patchDTO));
     }
 
     @GetMapping("/{id}")
