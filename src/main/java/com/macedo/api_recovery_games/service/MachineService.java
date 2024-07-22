@@ -3,6 +3,7 @@ package com.macedo.api_recovery_games.service;
 import com.macedo.api_recovery_games.exception.MachineNotAvailableException;
 import com.macedo.api_recovery_games.exception.MachineNotFoundException;
 import com.macedo.api_recovery_games.models.Machine;
+import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.dtos.MachineDTO;
 import com.macedo.api_recovery_games.models.dtos.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.mapper.MachineMapper;
@@ -77,8 +78,14 @@ public class MachineService {
     public void checkAvailabilityForRental(Machine machine) {
         if (!machine.isAvailable()) throw new MachineNotAvailableException(machine.getId());
     }
-    public void markMachineAsUnavailable(Machine machine){
+
+    public void markMachineAsUnavailable(Machine machine) {
         machine.setAvailable(false);
+        machineRepository.save(machine);
+    }
+
+    public void addRental(Rental rental, Machine machine) {
+        machine.AddRental(rental);
         machineRepository.save(machine);
     }
 }
