@@ -1,5 +1,6 @@
 package com.macedo.api_recovery_games.service;
 
+import com.macedo.api_recovery_games.exception.RentalNotFoundException;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.models.mapper.RentalMapper;
@@ -31,6 +32,11 @@ public class RentalService {
         Rental rental = mapper.toEntity(rentalDTO);
         repository.save(rental);
 
+        return mapper.toDTO(rental);
+    }
+
+    public RentalDTO getRentalById(Long id){
+        Rental rental = repository.findById(id).orElseThrow(()-> new RentalNotFoundException(id));
         return mapper.toDTO(rental);
     }
 
