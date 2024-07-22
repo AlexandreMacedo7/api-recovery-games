@@ -1,6 +1,7 @@
 package com.macedo.api_recovery_games.service;
 
 import com.macedo.api_recovery_games.exception.UserNotFoundException;
+import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.User;
 import com.macedo.api_recovery_games.models.dtos.UserDTO;
 import com.macedo.api_recovery_games.models.dtos.UserPatchDTO;
@@ -55,10 +56,13 @@ public class UserService {
         }
     }
 
-    public void validateById(Long id) {
-        if (!repository.existsById(id)) {
-            throw new UserNotFoundException(id);
-        }
+    public User validateById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    }
+
+    public void addRental(Rental rental, User user) {
+        user.addRental(rental);
+        repository.save(user);
     }
 
     private User fieldUpdate(UserPatchDTO userPatchDTO, Optional<User> optionalUser) {
