@@ -8,6 +8,7 @@ import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.models.dtos.RentalPatchDTO;
 import com.macedo.api_recovery_games.models.mapper.RentalMapper;
 import com.macedo.api_recovery_games.repository.RentalRepository;
+import com.macedo.api_recovery_games.util.RentalCalculator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -17,28 +18,33 @@ import java.util.Optional;
 @Service
 public class RentalService {
 
+
     private final RentalRepository repository;
     private final MachineService machineService;
     private final UserService userService;
+    private final RentalCalculator rentalCalculator;
     private final RentalMapper mapper;
 
 
-    public RentalService(RentalRepository repository, MachineService machineService, UserService userService, RentalMapper mapper) {
+    public RentalService(RentalRepository repository, MachineService machineService, UserService userService, RentalCalculator rentalCalculator, RentalMapper mapper) {
         this.repository = repository;
         this.machineService = machineService;
         this.userService = userService;
+        this.rentalCalculator = rentalCalculator;
         this.mapper = mapper;
     }
 
     @Transactional
     public RentalDTO saveRental(RentalDTO rentalDTO) {
-
         Machine machine = validateMachine(rentalDTO.machineId());
         checkAvailabilityForRental(machine);
 
         User user = validateUser(rentalDTO.userId());
 
         Rental rental = mapper.toEntity(rentalDTO);
+
+        rentalCalculator.calculateRentalTime(rental, machine.getHourlyRate(), rentalDTO.totalCost());
+
         repository.save(rental);
 
         addRentalForMachine(rental, machine);
@@ -74,8 +80,6 @@ public class RentalService {
     private Rental updateFields(RentalPatchDTO patchDTO, Optional<Rental> rentalOptional) {
         Rental rental = rentalOptional.get();
 
-        patchDTO.startTime().ifPresent(rental::setStartTime);
-        patchDTO.endTime().ifPresent(rental::setEndTime);
         patchDTO.totalCost().ifPresent(rental::setTotalCost);
 
         repository.save(rental);
