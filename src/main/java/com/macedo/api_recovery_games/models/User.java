@@ -1,10 +1,14 @@
 package com.macedo.api_recovery_games.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,6 +18,7 @@ public class User {
     private Long id;
 
     private String name;
+
     private String phone;
 
     @OneToMany(mappedBy = "user")
@@ -22,36 +27,8 @@ public class User {
     public User() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public List<Rental> getRentals() {
-        return rentals;
-    }
-
     public void addRental(Rental rental) {
         rentals.add(rental);
         rental.setUser(this);
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }

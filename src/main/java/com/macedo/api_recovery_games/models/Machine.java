@@ -1,11 +1,15 @@
 package com.macedo.api_recovery_games.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "machines")
 public class Machine {
@@ -23,45 +27,11 @@ public class Machine {
     public Machine() {
     }
 
-    public Long getId() {
-        return Id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public BigDecimal getHourlyRate() {
-        return hourlyRate;
-    }
-
-    public boolean isAvailable() {
-        return available;
-    }
-
-    public List<Rental> getRentals() {
-        return rentals;
-    }
-    public void AddRental(Rental rental){
+    public void AddRental(Rental rental) {
         rentals.add(rental);
         rental.setMachine(this);
     }
 
-    public void setId(Long id) {
-        Id = id;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setHourlyRate(BigDecimal hourlyRate) {
-        this.hourlyRate = hourlyRate;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
     public void removeRental(Rental rental) {
         rentals.remove(rental);
         rental.setMachine(null);
