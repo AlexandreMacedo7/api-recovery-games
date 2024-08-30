@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +17,28 @@ public class Machine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
     private String type;
-    private BigDecimal hourlyRate;
     private boolean available = true;
 
-    @OneToMany(mappedBy = "machine")
+    @OneToMany(mappedBy = "machine", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rental> rentals = new ArrayList<>();
+
+    @OneToMany(mappedBy = "machine", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Control> controls = new ArrayList<>();
 
     public Machine() {
     }
 
-    public void AddRental(Rental rental) {
+    public void addControl(Control control) {
+        controls.add(control);
+        control.setMachine(this);
+    }
+
+    public void removeControl(Control control) {
+        controls.remove(control);
+        control.setMachine(null);
+    }
+
+    public void addRental(Rental rental) {
         rentals.add(rental);
         rental.setMachine(this);
     }
