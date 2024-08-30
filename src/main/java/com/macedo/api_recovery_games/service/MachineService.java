@@ -2,11 +2,14 @@ package com.macedo.api_recovery_games.service;
 
 import com.macedo.api_recovery_games.exception.MachineNotAvailableException;
 import com.macedo.api_recovery_games.exception.MachineNotFoundException;
+import com.macedo.api_recovery_games.models.Control;
 import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.Rental;
+import com.macedo.api_recovery_games.models.dtos.ControlDTO;
 import com.macedo.api_recovery_games.models.dtos.MachineDTO;
 import com.macedo.api_recovery_games.models.dtos.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.dtos.RentalDTO;
+import com.macedo.api_recovery_games.models.mapper.ControlMapper;
 import com.macedo.api_recovery_games.models.mapper.MachineMapper;
 import com.macedo.api_recovery_games.models.mapper.RentalMapper;
 import com.macedo.api_recovery_games.repository.MachineRepository;
@@ -23,28 +26,36 @@ public class MachineService {
     private final MachineRepository machineRepository;
     private final MachineMapper mapper;
     private final RentalMapper rentalMapper;
+    private final ControlMapper controlMapper;
 
     @Autowired
-    public MachineService(MachineRepository machineRepository, MachineMapper mapper, RentalMapper rentalMapper) {
+    public MachineService(MachineRepository machineRepository, MachineMapper mapper, RentalMapper rentalMapper, ControlMapper controlMapper) {
         this.machineRepository = machineRepository;
         this.mapper = mapper;
         this.rentalMapper = rentalMapper;
+        this.controlMapper = controlMapper;
     }
-
+    // TODO: Melhorar responsabilidade do método
+    // TODO: Realizar validação de entrada
     @Transactional
     public MachineDTO saveMachine(MachineDTO machineDTO) {
         Machine machine = mapper.toEntity(machineDTO);
+        List<Control> controls = controlMapper.toEntityList(machineDTO.controlDTOList());
+        for (Control control : controls) {
+            machine.addControl(control);
+        }
         machineRepository.save(machine);
-        return mapper.toDTO(machine);
+        List<ControlDTO> controlDTOList = controlMapper.toDTOList(machine.getControls());
+        return new MachineDTO(machine.getType(), controlDTOList);
     }
 
-    @Transactional
-    public MachineDTO patchMachine(Long id, MachinePatchDTO dto) {
-        Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
-                .orElseThrow(() -> new MachineNotFoundException(id)));
-
-        return mapper.toDTO(fieldUpdate(dto, machineOptional));
-    }
+//    @Transactional
+//    public MachineDTO patchMachine(Long id, MachinePatchDTO dto) {
+//        Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
+//                .orElseThrow(() -> new MachineNotFoundException(id)));
+//
+//        return mapper.toDTO(fieldUpdate(dto, machineOptional));
+//    }
 
     public MachineDTO getMachineById(Long id) {
         Machine machine = machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
@@ -69,16 +80,16 @@ public class MachineService {
         }
     }
 
-    private Machine fieldUpdate(MachinePatchDTO machinePatchDTO, Optional<Machine> machineOptional) {
-
-        Machine machine = machineOptional.get();
-
-        machinePatchDTO.type().ifPresent(machine::setType);
-        machinePatchDTO.hourlyRate().ifPresent(machine::setHourlyRate);
-
-        machineRepository.save(machine);
-        return machine;
-    }
+//    private Machine fieldUpdate(MachinePatchDTO machinePatchDTO, Optional<Machine> machineOptional) {
+//
+//        Machine machine = machineOptional.get();
+//
+//        machinePatchDTO.type().ifPresent(machine::setType);
+//        machinePatchDTO.hourlyRate().ifPresent(machine::setHourlyRate);
+//
+//        machineRepository.save(machine);
+//        return machine;
+//    }
 
     public Machine validateById(Long id) {
         return machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
@@ -94,7 +105,7 @@ public class MachineService {
     }
 
     public void addRental(Rental rental, Machine machine) {
-        machine.AddRental(rental);
+        machine.addRental(rental);
         machineRepository.save(machine);
     }
 }
