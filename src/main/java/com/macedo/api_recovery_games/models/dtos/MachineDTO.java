@@ -1,9 +1,8 @@
 package com.macedo.api_recovery_games.models.dtos;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
-import java.math.BigDecimal;
+import java.util.List;
 
-public record MachineDTO(@NotBlank String type, @NotNull BigDecimal hourlyRate) {
+public record MachineDTO(@NotBlank String type, List<ControlDTO> controlDTOList) {
 }
