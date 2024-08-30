@@ -1,7 +1,7 @@
 package com.macedo.api_recovery_games.controller;
 
 import com.macedo.api_recovery_games.models.dtos.MachineDTO;
-import com.macedo.api_recovery_games.models.dtos.MachinePatchDTO;
+import com.macedo.api_recovery_games.models.dtos.MachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.service.MachineService;
 import jakarta.validation.Valid;
@@ -18,8 +18,8 @@ public class MachineController {
     private MachineService machineService;
 
     @PostMapping
-    public ResponseEntity<MachineDTO> createMachine(@Valid @RequestBody MachineDTO machineDTO) {
-        MachineDTO savedMachine = machineService.saveMachine(machineDTO);
+    public ResponseEntity<MachineResponseDTO> createMachine(@Valid @RequestBody MachineDTO machineDTO) {
+        MachineResponseDTO savedMachine = machineService.saveMachine(machineDTO);
         return ResponseEntity.ok(savedMachine);
     }
 
