@@ -23,10 +23,10 @@ public class MachineController {
         return ResponseEntity.ok(savedMachine);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<MachineDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
-        return ResponseEntity.ok(machineService.patchMachine(id, machinePatchDTO));
-    }
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<MachineDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
+//        return ResponseEntity.ok();//machineService.patchMachine(id, machinePatchDTO));
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MachineDTO> getMachine(@PathVariable Long id) {

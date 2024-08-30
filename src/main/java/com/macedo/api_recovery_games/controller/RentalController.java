@@ -19,10 +19,10 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
-    @PostMapping
-    public ResponseEntity<RentalDTO> createRental(@RequestBody @Valid RentalDTO rentalDTO) {
-        return ResponseEntity.ok(rentalService.saveRental(rentalDTO));
-    }
+//    @PostMapping
+//    public ResponseEntity<RentalDTO> createRental(@RequestBody @Valid RentalDTO rentalDTO) {
+//        return ResponseEntity.ok(rentalService.saveRental(rentalDTO));
+//    }
 
     @PatchMapping("/{id}")
     public ResponseEntity<RentalDTO> updateRental(@PathVariable Long id, @RequestBody RentalPatchDTO patchDTO) {

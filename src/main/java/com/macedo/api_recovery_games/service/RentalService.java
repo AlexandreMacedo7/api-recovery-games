@@ -34,25 +34,25 @@ public class RentalService {
         this.mapper = mapper;
     }
 
-    @Transactional
-    public RentalDTO saveRental(RentalDTO rentalDTO) {
-        Machine machine = validateMachine(rentalDTO.machineId());
-        checkAvailabilityForRental(machine);
-
-        User user = validateUser(rentalDTO.userId());
-
-        Rental rental = mapper.toEntity(rentalDTO);
-
-        rentalCalculator.calculateRentalTime(rental, machine.getHourlyRate(), rentalDTO.totalCost());
-
-        repository.save(rental);
-
-        addRentalForMachine(rental, machine);
-        updateAvailableStatusMachine(machine);
-        addRentalForUser(rental, user);
-
-        return mapper.toDTO(rental);
-    }
+//    @Transactional
+//    public RentalDTO saveRental(RentalDTO rentalDTO) {
+//        Machine machine = validateMachine(rentalDTO.machineId());
+//        checkAvailabilityForRental(machine);
+//
+//        User user = validateUser(rentalDTO.userId());
+//
+//        Rental rental = mapper.toEntity(rentalDTO);
+//
+//        rentalCalculator.calculateRentalTime(rental, machine.getHourlyRate(), rentalDTO.totalCost());
+//
+//        repository.save(rental);
+//
+//        addRentalForMachine(rental, machine);
+//        updateAvailableStatusMachine(machine);
+//        addRentalForUser(rental, user);
+//
+//        return mapper.toDTO(rental);
+//    }
 
     @Transactional
     public RentalDTO patchRental(Long id, RentalPatchDTO patchDTO) {
