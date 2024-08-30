@@ -7,6 +7,5 @@ public record MachinePatchDTO(Optional<String> type, Optional<BigDecimal> hourly
 
     public MachinePatchDTO {
         type = type != null ? type : Optional.empty();
-        hourlyRate = hourlyRate != null ? hourlyRate : Optional.empty();
     }
 }
