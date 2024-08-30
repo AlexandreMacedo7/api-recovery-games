@@ -35,9 +35,9 @@ public class MachineService {
     // TODO: Melhorar responsabilidade do método
     // TODO: Realizar validação de entrada
     @Transactional
-    public MachineResponseDTO saveMachine(MachineDTO machineDTO) {
-        Machine machine = mapper.toEntity(machineDTO);
-        List<Control> controls = controlMapper.toEntityList(machineDTO.controlDTOList());
+    public MachineResponseDTO saveMachine(CreateMachineDTO createMachineDTO) {
+        Machine machine = mapper.toEntity(createMachineDTO);
+        List<Control> controls = controlMapper.toEntityList(createMachineDTO.createControlDTOList());
         for (Control control : controls) {
             machine.addControl(control);
         }
@@ -47,14 +47,14 @@ public class MachineService {
     }
 
     @Transactional
-    public MachineDTO patchMachine(Long id, MachinePatchDTO dto) {
+    public CreateMachineDTO patchMachine(Long id, MachinePatchDTO dto) {
         Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
                 .orElseThrow(() -> new MachineNotFoundException(id)));
 
         return mapper.toDTO(fieldUpdate(dto, machineOptional));
     }
 
-    public MachineDTO getMachineById(Long id) {
+    public CreateMachineDTO getMachineById(Long id) {
         Machine machine = machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
         return mapper.toDTO(machine);
     }
@@ -64,7 +64,7 @@ public class MachineService {
         return rentalMapper.toDTOList(machine.getRentals());
     }
 
-    public List<MachineDTO> getAllMachines() {
+    public List<CreateMachineDTO> getAllMachines() {
         List<Machine> machineList = machineRepository.findAll();
         return mapper.toDTOList(machineList);
     }

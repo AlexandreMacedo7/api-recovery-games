@@ -1,6 +1,6 @@
 package com.macedo.api_recovery_games.controller;
 
-import com.macedo.api_recovery_games.models.dtos.MachineDTO;
+import com.macedo.api_recovery_games.models.dtos.CreateMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.MachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.RentalDTO;
 import com.macedo.api_recovery_games.service.MachineService;
@@ -18,18 +18,18 @@ public class MachineController {
     private MachineService machineService;
 
     @PostMapping
-    public ResponseEntity<MachineResponseDTO> createMachine(@Valid @RequestBody MachineDTO machineDTO) {
-        MachineResponseDTO savedMachine = machineService.saveMachine(machineDTO);
+    public ResponseEntity<MachineResponseDTO> createMachine(@Valid @RequestBody CreateMachineDTO createMachineDTO) {
+        MachineResponseDTO savedMachine = machineService.saveMachine(createMachineDTO);
         return ResponseEntity.ok(savedMachine);
     }
 
 //    @PatchMapping("/{id}")
-//    public ResponseEntity<MachineDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
+//    public ResponseEntity<CreateMachineDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
 //        return ResponseEntity.ok();//machineService.patchMachine(id, machinePatchDTO));
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MachineDTO> getMachine(@PathVariable Long id) {
+    public ResponseEntity<CreateMachineDTO> getMachine(@PathVariable Long id) {
         return ResponseEntity.ok(machineService.getMachineById(id));
     }
 
@@ -39,7 +39,7 @@ public class MachineController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MachineDTO>> getAllMachines() {
+    public ResponseEntity<List<CreateMachineDTO>> getAllMachines() {
         return ResponseEntity.ok(machineService.getAllMachines());
     }
 

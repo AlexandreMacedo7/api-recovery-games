@@ -1,7 +1,7 @@
 package com.macedo.api_recovery_games.models.mapper;
 
 import com.macedo.api_recovery_games.models.Control;
-import com.macedo.api_recovery_games.models.dtos.ControlDTO;
+import com.macedo.api_recovery_games.models.dtos.CreateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.ControlResponseDTO;
 import org.mapstruct.Mapper;
 
@@ -12,10 +12,10 @@ public interface ControlMapper {
 
     ControlResponseDTO toDTO(Control control);
 
-    Control toEntity(ControlDTO controlDTO);
+    Control toEntity(CreateControlDTO createControlDTO);
 
     List<ControlResponseDTO> toDTOList(List<Control> controlsList);
 
-    List<Control> toEntityList(List<ControlDTO> controlDTOList);
+    List<Control> toEntityList(List<CreateControlDTO> createControlDTOList);
 
 }

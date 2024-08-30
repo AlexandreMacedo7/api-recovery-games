@@ -4,5 +4,5 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
-public record MachineDTO(@NotBlank String type, List<ControlDTO> controlDTOList) {
+public record CreateMachineDTO(@NotBlank String type, List<CreateControlDTO> createControlDTOList) {
 }
