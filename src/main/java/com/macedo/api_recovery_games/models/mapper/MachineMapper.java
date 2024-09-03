@@ -2,6 +2,7 @@ package com.macedo.api_recovery_games.models.mapper;
 
 import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.dtos.CreateMachineDTO;
+import com.macedo.api_recovery_games.models.dtos.DetailsMachineDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public interface MachineMapper {
 
     CreateMachineDTO toDTO(Machine machine);
+    DetailsMachineDTO toDetailsDTO(Machine machine);
 
     Machine toEntity(CreateMachineDTO createMachineDTO);
 
