@@ -1,8 +1,6 @@
 package com.macedo.api_recovery_games.controller;
 
-import com.macedo.api_recovery_games.models.dtos.CreateMachineDTO;
-import com.macedo.api_recovery_games.models.dtos.MachineResponseDTO;
-import com.macedo.api_recovery_games.models.dtos.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.*;
 import com.macedo.api_recovery_games.service.MachineService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,10 @@ public class MachineController {
 //    public ResponseEntity<CreateMachineDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
 //        return ResponseEntity.ok();//machineService.patchMachine(id, machinePatchDTO));
 //    }
+    @PatchMapping("/{id}")
+    public ResponseEntity<DetailsMachineDTO> patchValueControlMachine(@PathVariable Long id, @RequestBody UpdateControlDTO dto){
+        return ResponseEntity.ok(machineService.updateValueControl(id, dto));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CreateMachineDTO> getMachine(@PathVariable Long id) {

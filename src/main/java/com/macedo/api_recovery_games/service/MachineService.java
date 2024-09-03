@@ -1,5 +1,6 @@
 package com.macedo.api_recovery_games.service;
 
+import com.macedo.api_recovery_games.exception.ControlNotFoundException;
 import com.macedo.api_recovery_games.exception.MachineNotAvailableException;
 import com.macedo.api_recovery_games.exception.MachineNotFoundException;
 import com.macedo.api_recovery_games.models.Control;
@@ -32,6 +33,7 @@ public class MachineService {
         this.rentalMapper = rentalMapper;
         this.controlMapper = controlMapper;
     }
+
     // TODO: Melhorar responsabilidade do método
     // TODO: Realizar validação de entrada
     @Transactional
@@ -43,15 +45,30 @@ public class MachineService {
         }
         machineRepository.save(machine);
         List<ControlResponseDTO> controlResponseDTOSDTOList = controlMapper.toDTOList(machine.getControls());
-        return new MachineResponseDTO(machine.getId(),machine.getType(), controlResponseDTOSDTOList);
+        return new MachineResponseDTO(machine.getId(), machine.getType(), controlResponseDTOSDTOList);
     }
 
     @Transactional
-    public CreateMachineDTO patchMachine(Long id, MachinePatchDTO dto) {
+    public CreateMachineDTO updateTypeMachine(Long id, MachinePatchDTO dto) {
         Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
                 .orElseThrow(() -> new MachineNotFoundException(id)));
 
         return mapper.toDTO(fieldUpdate(dto, machineOptional));
+    }
+    //TODO Refatorar método para melhorar suas responsabilidades e legibilidade
+    @Transactional
+    public DetailsMachineDTO updateValueControl(Long idMachine, UpdateControlDTO controlDTO) {
+        Machine machine = validateById(idMachine);
+
+        Control control = machine.getControls().stream()
+                .filter(c -> c.getId().equals(controlDTO.id()))
+                .findFirst()
+                .orElseThrow(() -> new ControlNotFoundException(controlDTO.id()));
+
+        control.setValueControl(controlDTO.valueControl());
+        machineRepository.save(machine);
+        List<DetailsControlDTO> detailsControlDTOList = controlMapper.toDetailsDTOList(machine.getControls());
+        return new DetailsMachineDTO(machine.getId(), machine.getType(), detailsControlDTOList);
     }
 
     public CreateMachineDTO getMachineById(Long id) {
