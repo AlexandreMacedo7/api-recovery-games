@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class MachineService {
@@ -55,11 +54,9 @@ public class MachineService {
     }
 
     @Transactional
-    public CreateMachineDTO updateTypeMachine(Long id, MachinePatchDTO dto) {
-        Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
-                .orElseThrow(() -> new MachineNotFoundException(id)));
-
-        return machineMapper.toDTO(fieldUpdate(dto, machineOptional));
+    public SimpleMachineResponseDTO updateTypeMachine(Long id, MachinePatchDTO dto) {
+        var machine = machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
+        return machineMapper.toSimpleDTO(fieldUpdate(dto, machine));
     }
 
     //TODO Refatorar método para melhorar suas responsabilidades e legibilidade
@@ -102,12 +99,8 @@ public class MachineService {
         }
     }
 
-    private Machine fieldUpdate(MachinePatchDTO machinePatchDTO, Optional<Machine> machineOptional) {
-
-        Machine machine = machineOptional.get();
-
-        machinePatchDTO.type().ifPresent(machine::setType);
-
+    private Machine fieldUpdate(MachinePatchDTO machinePatchDTO, Machine machine) {
+        machine.setType(machinePatchDTO.type());
         machineRepository.save(machine);
         return machine;
     }

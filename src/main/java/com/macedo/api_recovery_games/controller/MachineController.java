@@ -2,6 +2,7 @@ package com.macedo.api_recovery_games.controller;
 
 import com.macedo.api_recovery_games.models.dtos.controldto.UpdateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.SimpleMachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
@@ -25,11 +26,12 @@ public class MachineController {
         return ResponseEntity.ok(savedMachine);
     }
 
-    //    @PatchMapping("/{id}")
-//    public ResponseEntity<CreateMachineDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
-//        return ResponseEntity.ok();//machineService.patchMachine(id, machinePatchDTO));
-//    }
     @PatchMapping("/{id}")
+    public ResponseEntity<SimpleMachineResponseDTO> patchMachine(@PathVariable Long id, @RequestBody MachinePatchDTO machinePatchDTO) {
+        return ResponseEntity.ok(machineService.updateTypeMachine(id, machinePatchDTO));
+    }
+
+    @PatchMapping("/{id}/control")
     public ResponseEntity<MachineResponseDTO> patchValueControlMachine(@PathVariable Long id, @RequestBody UpdateControlDTO dto) {
         return ResponseEntity.ok(machineService.updateValueControl(id, dto));
     }
