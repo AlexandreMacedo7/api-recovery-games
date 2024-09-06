@@ -3,7 +3,6 @@ package com.macedo.api_recovery_games.models.mapper;
 import com.macedo.api_recovery_games.models.Control;
 import com.macedo.api_recovery_games.models.dtos.controldto.CreateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.controldto.ControlResponseDTO;
-import com.macedo.api_recovery_games.models.dtos.controldto.DetailsControlDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;

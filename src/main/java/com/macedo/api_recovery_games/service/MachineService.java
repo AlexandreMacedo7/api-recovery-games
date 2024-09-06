@@ -7,10 +7,8 @@ import com.macedo.api_recovery_games.models.Control;
 import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.dtos.controldto.ControlResponseDTO;
-import com.macedo.api_recovery_games.models.dtos.controldto.DetailsControlDTO;
 import com.macedo.api_recovery_games.models.dtos.controldto.UpdateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
-import com.macedo.api_recovery_games.models.dtos.machinedto.DetailsMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
@@ -29,14 +27,14 @@ import java.util.Optional;
 public class MachineService {
 
     private final MachineRepository machineRepository;
-    private final MachineMapper mapper;
+    private final MachineMapper machineMapper;
     private final RentalMapper rentalMapper;
     private final ControlMapper controlMapper;
 
     @Autowired
-    public MachineService(MachineRepository machineRepository, MachineMapper mapper, RentalMapper rentalMapper, ControlMapper controlMapper) {
+    public MachineService(MachineRepository machineRepository, MachineMapper machineMapper, RentalMapper rentalMapper, ControlMapper controlMapper) {
         this.machineRepository = machineRepository;
-        this.mapper = mapper;
+        this.machineMapper = machineMapper;
         this.rentalMapper = rentalMapper;
         this.controlMapper = controlMapper;
     }
@@ -45,7 +43,7 @@ public class MachineService {
     // TODO: Realizar validação de entrada
     @Transactional
     public MachineResponseDTO saveMachine(CreateMachineDTO createMachineDTO) {
-        Machine machine = mapper.toEntity(createMachineDTO);
+        Machine machine = machineMapper.toEntity(createMachineDTO);
         List<Control> controls = controlMapper.toEntityList(createMachineDTO.createControlDTOList());
         for (Control control : controls) {
             machine.addControl(control);
@@ -60,11 +58,12 @@ public class MachineService {
         Optional<Machine> machineOptional = Optional.ofNullable(machineRepository.findById(id)
                 .orElseThrow(() -> new MachineNotFoundException(id)));
 
-        return mapper.toDTO(fieldUpdate(dto, machineOptional));
+        return machineMapper.toDTO(fieldUpdate(dto, machineOptional));
     }
+
     //TODO Refatorar método para melhorar suas responsabilidades e legibilidade
     @Transactional
-    public DetailsMachineDTO updateValueControl(Long idMachine, UpdateControlDTO controlDTO) {
+    public MachineResponseDTO updateValueControl(Long idMachine, UpdateControlDTO controlDTO) {
         Machine machine = validateById(idMachine);
 
         Control control = machine.getControls().stream()
@@ -74,13 +73,14 @@ public class MachineService {
 
         control.setValueControl(controlDTO.valueControl());
         machineRepository.save(machine);
-        List<DetailsControlDTO> detailsControlDTOList = controlMapper.toDetailsDTOList(machine.getControls());
-        return new DetailsMachineDTO(machine.getId(), machine.getType(), detailsControlDTOList);
+        List<ControlResponseDTO> detailsControlDTOList = controlMapper.toDTOList(machine.getControls());
+        return new MachineResponseDTO(machine.getId(), machine.getType(), detailsControlDTOList);
     }
 
-    public CreateMachineDTO getMachineById(Long id) {
+    public MachineResponseDTO getMachineById(Long id) {
         Machine machine = machineRepository.findById(id).orElseThrow(() -> new MachineNotFoundException(id));
-        return mapper.toDTO(machine);
+        List<ControlResponseDTO> controlResponseDTOS = controlMapper.toDTOList(machine.getControls());
+        return new MachineResponseDTO(machine.getId(), machine.getType(), controlResponseDTOS);
     }
 
     public List<RentalDTO> getRentalsByMachineId(Long id) {
@@ -90,7 +90,7 @@ public class MachineService {
 
     public List<CreateMachineDTO> getAllMachines() {
         List<Machine> machineList = machineRepository.findAll();
-        return mapper.toDTOList(machineList);
+        return machineMapper.toDTOList(machineList);
     }
 
     public void deleteMachineById(Long id) throws MachineNotFoundException {
