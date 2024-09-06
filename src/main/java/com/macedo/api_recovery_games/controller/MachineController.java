@@ -3,6 +3,7 @@ package com.macedo.api_recovery_games.controller;
 import com.macedo.api_recovery_games.models.dtos.controldto.UpdateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.SimpleMachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
 import com.macedo.api_recovery_games.service.MachineService;
 import jakarta.validation.Valid;
@@ -44,7 +45,7 @@ public class MachineController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CreateMachineDTO>> getAllMachines() {
+    public ResponseEntity<List<SimpleMachineResponseDTO>> getAllMachines() {
         return ResponseEntity.ok(machineService.getAllMachines());
     }
 

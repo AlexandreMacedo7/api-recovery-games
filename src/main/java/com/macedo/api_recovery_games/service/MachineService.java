@@ -11,6 +11,7 @@ import com.macedo.api_recovery_games.models.dtos.controldto.UpdateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.SimpleMachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
 import com.macedo.api_recovery_games.models.mapper.ControlMapper;
 import com.macedo.api_recovery_games.models.mapper.MachineMapper;
@@ -88,9 +89,9 @@ public class MachineService {
         return rentalMapper.toDTOList(machine.getRentals());
     }
 
-    public List<CreateMachineDTO> getAllMachines() {
+    public List<SimpleMachineResponseDTO> getAllMachines() {
         List<Machine> machineList = machineRepository.findAll();
-        return machineMapper.toDTOList(machineList);
+        return machineMapper.toDTOSimpleList(machineList);
     }
 
     public void deleteMachineById(Long id) throws MachineNotFoundException {
