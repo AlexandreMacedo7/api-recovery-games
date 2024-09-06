@@ -1,4 +1,4 @@
-package com.macedo.api_recovery_games.models.dtos;
+package com.macedo.api_recovery_games.models.dtos.machinedto;
 
 import java.math.BigDecimal;
 import java.util.Optional;

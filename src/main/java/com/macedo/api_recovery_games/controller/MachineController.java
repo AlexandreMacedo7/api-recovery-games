@@ -1,6 +1,10 @@
 package com.macedo.api_recovery_games.controller;
 
-import com.macedo.api_recovery_games.models.dtos.*;
+import com.macedo.api_recovery_games.models.dtos.controldto.UpdateControlDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.DetailsMachineDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
 import com.macedo.api_recovery_games.service.MachineService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

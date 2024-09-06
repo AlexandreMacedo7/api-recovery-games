@@ -1,5 +1,6 @@
-package com.macedo.api_recovery_games.models.dtos;
+package com.macedo.api_recovery_games.models.dtos.machinedto;
 
+import com.macedo.api_recovery_games.models.dtos.controldto.CreateControlDTO;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;

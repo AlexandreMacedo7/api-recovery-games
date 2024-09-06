@@ -1,4 +1,4 @@
-package com.macedo.api_recovery_games.models.dtos;
+package com.macedo.api_recovery_games.models.dtos.rentaldto;
 
 import jakarta.validation.constraints.NotNull;
 

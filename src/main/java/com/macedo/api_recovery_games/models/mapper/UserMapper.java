@@ -1,7 +1,7 @@
 package com.macedo.api_recovery_games.models.mapper;
 
 import com.macedo.api_recovery_games.models.User;
-import com.macedo.api_recovery_games.models.dtos.UserDTO;
+import com.macedo.api_recovery_games.models.dtos.userdto.UserDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -1,9 +1,8 @@
 package com.macedo.api_recovery_games.controller;
 
-import com.macedo.api_recovery_games.models.dtos.RentalDTO;
-import com.macedo.api_recovery_games.models.dtos.RentalPatchDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalPatchDTO;
 import com.macedo.api_recovery_games.service.RentalService;
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

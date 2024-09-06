@@ -1,8 +1,8 @@
 package com.macedo.api_recovery_games.models.mapper;
 
 import com.macedo.api_recovery_games.models.Machine;
-import com.macedo.api_recovery_games.models.dtos.CreateMachineDTO;
-import com.macedo.api_recovery_games.models.dtos.DetailsMachineDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
+import com.macedo.api_recovery_games.models.dtos.machinedto.DetailsMachineDTO;
 import org.mapstruct.Mapper;
 
 import java.util.List;
