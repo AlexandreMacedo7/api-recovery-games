@@ -13,6 +13,7 @@ public class Control {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
     private Integer number;
     private Double valueControl;
     @ManyToOne

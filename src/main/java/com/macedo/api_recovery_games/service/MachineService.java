@@ -7,6 +7,7 @@ import com.macedo.api_recovery_games.models.Control;
 import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.dtos.controldto.ControlResponseDTO;
+import com.macedo.api_recovery_games.models.dtos.controldto.CreateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.controldto.UpdateControlDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachinePatchDTO;
@@ -59,6 +60,18 @@ public class MachineService {
         return machineMapper.toSimpleDTO(fieldUpdate(dto, machine));
     }
 
+    @Transactional
+
+    public MachineResponseDTO createControl(Long id, CreateControlDTO dto) {
+        Machine machine = validateById(id);
+        validateValuesControl(dto, machine);
+        Control control = controlMapper.toEntity(dto);
+        machine.addControl(control);
+        Machine machineSave = machineRepository.save(machine);
+        List<ControlResponseDTO> controlResponseDTOList = controlMapper.toDTOList(machine.getControls());
+        return new MachineResponseDTO(machineSave.getId(), machineSave.getType(), controlResponseDTOList);
+    }
+
     //TODO Refatorar método para melhorar suas responsabilidades e legibilidade
     @Transactional
     public MachineResponseDTO updateValueControl(Long idMachine, UpdateControlDTO controlDTO) {
@@ -103,6 +116,21 @@ public class MachineService {
         machine.setType(machinePatchDTO.type());
         machineRepository.save(machine);
         return machine;
+    }
+    /*TODO: Validar valores de controles - onde controle 1 precisa ser menor que 2, e 2 não pode ser maior que 3
+     1 = 5 , 2 = 10, 3 =15
+    */
+    private void validateValuesControl(CreateControlDTO dto, Machine machine){
+        boolean isPresent = machine.getControls()
+                .stream().anyMatch(control -> control.getNumber().equals(dto.number()));
+        if (isPresent){
+            throw new IllegalArgumentException("Já existe um controle com número: " + dto.number());
+        }
+        boolean isSmaller = machine.getControls()
+                .stream().anyMatch(control -> control.getValueControl() > dto.valueControl());
+        if (isSmaller){
+            throw new IllegalArgumentException("O valor do controle não pode ser menor que os controles anteriores: " + dto.valueControl());
+        }
     }
 
     public Machine validateById(Long id) {
