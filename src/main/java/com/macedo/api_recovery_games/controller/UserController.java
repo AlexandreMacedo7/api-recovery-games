@@ -1,6 +1,6 @@
 package com.macedo.api_recovery_games.controller;
 
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import com.macedo.api_recovery_games.models.dtos.userdto.UserDTO;
 import com.macedo.api_recovery_games.models.dtos.userdto.UserPatchDTO;
 import com.macedo.api_recovery_games.service.UserService;
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/rentals")
-    public ResponseEntity<List<RentalDTO>> getRentalsByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<CreateRentalDTO>> getRentalsByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(service.getRentalByUserId(id));
     }
 

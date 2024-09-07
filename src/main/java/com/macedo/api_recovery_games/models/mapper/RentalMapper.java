@@ -1,7 +1,7 @@
 package com.macedo.api_recovery_games.models.mapper;
 
 import com.macedo.api_recovery_games.models.Rental;
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -13,14 +13,14 @@ public interface RentalMapper {
     @Mapping(source = "machine.id", target = "machineId")
     @Mapping(source = "user.id", target = "userId")
     @Mapping(source = "totalCost", target = "totalCost")
-    RentalDTO toDTO(Rental rental);
+    CreateRentalDTO toDTO(Rental rental);
 
     @Mapping(source = "machineId", target = "machine.id")
     @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "totalCost", target = "totalCost")
-    Rental toEntity(RentalDTO rentalDTO);
+    Rental toEntity(CreateRentalDTO createRentalDTO);
 
-    List<RentalDTO> toDTOList(List<Rental> rentalList);
+    List<CreateRentalDTO> toDTOList(List<Rental> rentalList);
 
-    List<Rental> toEntityList(List<RentalDTO> rentalDTOS);
+    List<Rental> toEntityList(List<CreateRentalDTO> createRentalDTOS);
 }

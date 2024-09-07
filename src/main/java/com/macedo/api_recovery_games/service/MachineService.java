@@ -13,7 +13,7 @@ import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.SimpleMachineResponseDTO;
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import com.macedo.api_recovery_games.models.mapper.ControlMapper;
 import com.macedo.api_recovery_games.models.mapper.MachineMapper;
 import com.macedo.api_recovery_games.models.mapper.RentalMapper;
@@ -61,7 +61,6 @@ public class MachineService {
     }
 
     @Transactional
-
     public MachineResponseDTO createControl(Long id, CreateControlDTO dto) {
         Machine machine = validateById(id);
         validateValuesControl(dto, machine);
@@ -94,7 +93,7 @@ public class MachineService {
         return new MachineResponseDTO(machine.getId(), machine.getType(), controlResponseDTOS);
     }
 
-    public List<RentalDTO> getRentalsByMachineId(Long id) {
+    public List<CreateRentalDTO> getRentalsByMachineId(Long id) {
         Machine machine = validateById(id);
         return rentalMapper.toDTOList(machine.getRentals());
     }

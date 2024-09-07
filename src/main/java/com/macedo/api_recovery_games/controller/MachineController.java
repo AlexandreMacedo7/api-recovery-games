@@ -6,7 +6,7 @@ import com.macedo.api_recovery_games.models.dtos.machinedto.CreateMachineDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachinePatchDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.MachineResponseDTO;
 import com.macedo.api_recovery_games.models.dtos.machinedto.SimpleMachineResponseDTO;
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import com.macedo.api_recovery_games.service.MachineService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class MachineController {
     }
 
     @GetMapping("/{id}/rentals")
-    public ResponseEntity<List<RentalDTO>> getRentalsByMachineId(@PathVariable Long id) {
+    public ResponseEntity<List<CreateRentalDTO>> getRentalsByMachineId(@PathVariable Long id) {
         return ResponseEntity.ok(machineService.getRentalsByMachineId(id));
     }
 

@@ -3,7 +3,7 @@ package com.macedo.api_recovery_games.service;
 import com.macedo.api_recovery_games.exception.UserNotFoundException;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.User;
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import com.macedo.api_recovery_games.models.dtos.userdto.UserDTO;
 import com.macedo.api_recovery_games.models.dtos.userdto.UserPatchDTO;
 import com.macedo.api_recovery_games.models.mapper.RentalMapper;
@@ -47,7 +47,7 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public List<RentalDTO> getRentalByUserId(Long id) {
+    public List<CreateRentalDTO> getRentalByUserId(Long id) {
         User user = validateById(id);
         return rentalMapper.toDTOList(user.getRentals());
     }
