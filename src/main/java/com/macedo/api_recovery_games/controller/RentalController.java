@@ -1,8 +1,9 @@
 package com.macedo.api_recovery_games.controller;
 
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalPatchDTO;
 import com.macedo.api_recovery_games.service.RentalService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,23 +19,23 @@ public class RentalController {
         this.rentalService = rentalService;
     }
 
-//    @PostMapping
-//    public ResponseEntity<RentalDTO> createRental(@RequestBody @Valid RentalDTO rentalDTO) {
-//        return ResponseEntity.ok(rentalService.saveRental(rentalDTO));
-//    }
+    @PostMapping
+    public ResponseEntity<CreateRentalDTO> createRental(@RequestBody @Valid CreateRentalDTO rentalDTO) {
+        return ResponseEntity.ok(rentalService.saveRental(rentalDTO));
+    }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<RentalDTO> updateRental(@PathVariable Long id, @RequestBody RentalPatchDTO patchDTO) {
+    public ResponseEntity<CreateRentalDTO> updateRental(@PathVariable Long id, @RequestBody RentalPatchDTO patchDTO) {
         return ResponseEntity.ok(rentalService.patchRental(id, patchDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RentalDTO> getRental(@PathVariable Long id) {
+    public ResponseEntity<CreateRentalDTO> getRental(@PathVariable Long id) {
         return ResponseEntity.ok(rentalService.getRentalById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<RentalDTO>> getAllRentals() {
+    public ResponseEntity<List<CreateRentalDTO>> getAllRentals() {
         return ResponseEntity.ok(rentalService.getAllRental());
     }
 

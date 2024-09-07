@@ -4,7 +4,7 @@ import com.macedo.api_recovery_games.exception.RentalNotFoundException;
 import com.macedo.api_recovery_games.models.Machine;
 import com.macedo.api_recovery_games.models.Rental;
 import com.macedo.api_recovery_games.models.User;
-import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalDTO;
+import com.macedo.api_recovery_games.models.dtos.rentaldto.CreateRentalDTO;
 import com.macedo.api_recovery_games.models.dtos.rentaldto.RentalPatchDTO;
 import com.macedo.api_recovery_games.models.mapper.RentalMapper;
 import com.macedo.api_recovery_games.repository.RentalRepository;
@@ -34,38 +34,48 @@ public class RentalService {
         this.mapper = mapper;
     }
 
-//    @Transactional
-//    public RentalDTO saveRental(RentalDTO rentalDTO) {
-//        Machine machine = validateMachine(rentalDTO.machineId());
-//        checkAvailabilityForRental(machine);
-//
-//        User user = validateUser(rentalDTO.userId());
-//
-//        Rental rental = mapper.toEntity(rentalDTO);
-//
-//        rentalCalculator.calculateRentalTime(rental, machine.getHourlyRate(), rentalDTO.totalCost());
-//
-//        repository.save(rental);
-//
-//        addRentalForMachine(rental, machine);
-//        updateAvailableStatusMachine(machine);
-//        addRentalForUser(rental, user);
-//
-//        return mapper.toDTO(rental);
-//    }
+    //RECEBE DADOS: ID MACHINE - NUMBER CONTROL PARA CALCULO DE VALOR, ID USUARIO, E TOTALCOST - VALOR PAGO PELO CLIENTE
+    //CALCULAR QUANTAS HORAS SE PODE JOGAR COM UM CONTROLE COM VALOR X
 
     @Transactional
-    public RentalDTO patchRental(Long id, RentalPatchDTO patchDTO) {
+    public CreateRentalDTO saveRental(CreateRentalDTO dto) {
+
+        //VALIDACAO DA MAQUINA SE EXISTE
+        //SE ESTA DISPONIVEL PARA ALUGUEL
+        Machine machine = validateMachine(dto.machineId());
+        checkAvailabilityForRental(machine);
+
+        //VALIDA USUARIO
+        //VERIFICA SE EXISTE
+        User user = validateUser(dto.userId());
+
+        //CRIA OBJETO RENTAL
+        Rental rental = mapper.toEntity(dto);
+
+        //CHAMA METODO PARA CALCULAR O TEMPO DE RENTAL
+        rentalCalculator.calculateRentalTime(machine, dto.numberControl(), dto.totalCost(), rental);
+
+        repository.save(rental);
+
+        addRentalForMachine(rental, machine);
+        updateAvailableStatusMachine(machine);
+        addRentalForUser(rental, user);
+
+        return mapper.toDTO(rental);
+    }
+
+    @Transactional
+    public CreateRentalDTO patchRental(Long id, RentalPatchDTO patchDTO) {
         Optional<Rental> rentalOptional = Optional.ofNullable(repository.findById(id).orElseThrow(() -> new RentalNotFoundException(id)));
         return mapper.toDTO(updateFields(patchDTO, rentalOptional));
     }
 
-    public RentalDTO getRentalById(Long id) {
+    public CreateRentalDTO getRentalById(Long id) {
         Rental rental = repository.findById(id).orElseThrow(() -> new RentalNotFoundException(id));
         return mapper.toDTO(rental);
     }
 
-    public List<RentalDTO> getAllRental() {
+    public List<CreateRentalDTO> getAllRental() {
         return mapper.toDTOList(repository.findAll());
     }
 
